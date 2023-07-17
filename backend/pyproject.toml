@@ -1,0 +1,94 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "midas"
+description = "Finance service api"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "Humberto Rocha", email = "humrochagf@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = [
+  "fastapi",
+  "sqlmodel",
+  "typer",
+  "uvicorn",
+]
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/humrochagf/midas-api#readme"
+Issues = "https://github.com/humrochagf/midas-api/issues"
+Source = "https://github.com/humrochagf/midas-api"
+
+[tool.hatch.version]
+path = "midas/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "black",
+  "flake8",
+  "httpx",
+  "isort",
+  "mypy",
+  "pytest",
+  "pytest-cov",
+]
+[tool.hatch.envs.default.scripts]
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=midas --cov=tests {args}"
+no-cov = "cov --no-cov {args}"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["311"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "midas/__about__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[tool.black]
+force_exclude = [
+  ".env",
+  ".hatch",
+  ".mypy_cache",
+  ".venv",
+  "__pycache__",
+  "env",
+  "venv",
+]
+
+[tool.isort]
+profile = "black"
+skip = [
+  ".env",
+  ".hatch",
+  ".mypy_cache",
+  ".venv",
+  "__pycache__",
+  "env",
+  "venv",
+]
+
+[tool.mypy]
+disallow_incomplete_defs = true
+check_untyped_defs = true
+warn_unused_ignores = true

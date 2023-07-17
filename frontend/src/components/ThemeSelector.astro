@@ -1,0 +1,41 @@
+<theme-selector>
+  <button data-theme></button>
+</theme-selector>
+
+<script>
+  class ThemeSelector extends HTMLElement {
+    constructor() {
+      super();
+
+      const themes = ['dark', 'light', 'system'];
+      let currentTheme = localStorage.theme || 'system';
+
+      const themeSelectorBtn = this.querySelector('[data-theme]');
+
+      if (themeSelectorBtn != null) {
+        themeSelectorBtn.textContent = currentTheme;
+      }
+
+      themeSelectorBtn?.addEventListener('click', () => {
+        const index = (themes.indexOf(currentTheme) + 1) % themes.length;
+        currentTheme = themes[index];
+
+        if (currentTheme === 'system') {
+          localStorage.removeItem('theme');
+        } else {
+          localStorage.theme = currentTheme;
+        }
+
+        if (currentTheme === 'dark' || (currentTheme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+
+        themeSelectorBtn.textContent = currentTheme;
+      });
+    }
+  }
+
+  customElements.define('theme-selector', ThemeSelector);
+</script>
